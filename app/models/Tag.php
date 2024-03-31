@@ -30,7 +30,7 @@ class Tag extends Model
         return Recipe::findMany($recipes_ids);
     }
 
-    public static function findAll()
+    public static function getAllWithCountRecipes()
     {
         $tagsWithRecipes = [];
         $tags = parent::findAll();

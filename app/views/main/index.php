@@ -25,7 +25,7 @@
 <div class="recipes-list">
     <? foreach($recipes as $recipe): ?>
     <!-- single recipe -->
-    <a href="main/single?id=<?= $recipe['id'] ?>" class="recipe">
+    <a href="main/recipe?recipe_id=<?= $recipe['id'] ?>" class="recipe">
     <img
         src="/assets/img/recipes/<?= $recipe['img'] ?>"
         class="img recipe-img"

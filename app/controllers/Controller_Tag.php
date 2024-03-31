@@ -2,10 +2,12 @@
 
 class Controller_Tag extends Controller_Base
 {
+    $this->layout = 'admin_layout';
+    
     public function action_index()
     {
         $tags = Tag::findAll();
-        View::admin("tag/index", ["tags" => $tags]);
+        $this->render("tag/index", ["tags" => $tags]);
     }
 
     public function action_add()
@@ -14,15 +16,15 @@ class Controller_Tag extends Controller_Base
             try {
                 $validate = new Validate($_POST);
                 $validate->empty();
-                Tag::add($_POST);
-                $this->addMessage("add_tag", "ok")->redirect("/tag/index");
+                $result = Tag::add($_POST);
+                $this->addMessage($result, "add_tag")->redirect("/tag/index");
             }
             catch(Exception $e) {
-                $this->addMessage($e->getMessage(), "error")->redirect("/tag/add");
+                $this->addMessage(false, $e->getMessage())->back();
             }
         }
         else {
-            View::admin("tag/add");
+            $this->render("tag/add");
         }
     }
 
@@ -41,14 +43,14 @@ class Controller_Tag extends Controller_Base
         }
         else {
             $tag = Tag::findOne($_GET['id']);
-            View::admin("tag/edit", ['tag' => $tag]);
+            $this->render("tag/edit", ['tag' => $tag]);
         }
     } 
 
     public function action_delete()
     {
         $result = Tag::delete($_GET['id']); 
-        $result ?  $this->addMessage("delete_tag", "ok") : $this->addMessage("delete_tag", "error");
-        $this->redirect("/tag/index");
+        $this->addMessage($result, 'delete_tag');
+        $this->back();
     }
 }

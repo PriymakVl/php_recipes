@@ -42,7 +42,7 @@
     <!-- end of nav -->
     <!-- main -->
     <main class="page">
-      <? include $template_path; ?>
+      <? include $content_path; ?>
     </main>
     <!-- end of main -->
     <!-- footer -->

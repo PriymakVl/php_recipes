@@ -2,10 +2,12 @@
 
 class Controller_Tool extends Controller_Base
 {
+    $this->layout = 'admin_layout';
+
     public function action_index()
     {
         $tools = Tool::findAll();
-        View::admin("tool/index", ["tools" => $tools]);
+        $this->render("tool/index", ["tools" => $tools]);
     }
 
     public function action_add()
@@ -23,7 +25,7 @@ class Controller_Tool extends Controller_Base
             }
         }
         else {
-            View::admin("tool/add");
+            $this->render("tool/add");
         }
     }
 
@@ -33,23 +35,22 @@ class Controller_Tool extends Controller_Base
             try {
                 $validate = new Validate($_POST);
                 $validate->empty();
-                Tool::edit($_POST);
-                $this->addMessage("edit_tool", "ok")->redirect("/tool/index");
+                $result = Tool::edit($_POST);
+                $this->addMessage($result, "edit_tool")->redirect("/tool/index");
             }
             catch(Exception $e) {
-                $this->addMessage($e->getMessage(), "error")->redirect("/tool/edit", ["id" => $_POST['id']]);
+                $this->addMessage(false, $e->getMessage())->back();
             }
         }
         else {
             $tool = Tool::findOne($_GET['id']);
-            View::admin("tool/edit", ['tool' => $tool]);
+            $this->render("tool/edit", ['tool' => $tool]);
         }
     } 
 
     public function action_delete()
     {
         $result = Tool::delete($_GET['id']); 
-        $result ?  $this->addMessage("delete_tool", "ok") : $this->addMessage("delete_tool", "error");
-        $this->redirect("/tool/index");
+        $this->addMessage($result, 'delete_tool')->back();
     }
 }

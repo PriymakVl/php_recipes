@@ -2,25 +2,16 @@
 
 class View 
 {
-    public static function render($template, $data = null)
+    public static function render($layout, $content, $data = null)
     {
         if(is_array($data)){
             extract($data);
         }
 
-        $template_path = "app/views/" . $template . ".php";
+        $content_path = "app/views/" . $content . ".php";
 
-        include "app/views/layouts/main_layout.php"; 
+        include "app/views/layouts/" . $layout . ".php"; 
     }
-    public static function admin($template, $data = null)
-    {
-        if(is_array($data)){
-            extract($data);
-        }
 
-        $template_path = "app/views/" . $template . ".php";
-
-        include "app/views/layouts/admin_layout.php"; 
-    }
 
 }

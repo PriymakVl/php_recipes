@@ -44,10 +44,10 @@
     </nav>
     <!-- end menu -->
 
-<? echo Message::display(); ?>
+    <? echo Message::display(); ?>
 </div>
 
-<? include $template_path; ?>
+<? include $content_path; ?>
 
 
 <script src="/assets/js/delete.js"></script>

@@ -2,10 +2,12 @@
 
 class Controller_Recipe extends Controller_Base
 {
+    $this->layout = 'admin_layout';
+    
     public function action_index()
     {
         $recipes = Recipe::findAll();
-        View::admin("recipe/index", ["recipes" => $recipes]);
+        $this->render("recipe/index", ["recipes" => $recipes]);
     }
 
     public function action_add()
@@ -22,7 +24,7 @@ class Controller_Recipe extends Controller_Base
             }
         }
         else {
-            View::admin("recipe/add");
+            $this->render("recipe/add");
         }
     }
 
@@ -31,7 +33,7 @@ class Controller_Recipe extends Controller_Base
         $recipe = Recipe::findOne($_GET['id']);
         $tags = Recipe::getTags($_GET['id']);
         debug($tags);
-        View::admin("recipe/single/index", ['recipe' => $recipe, 'tags' => $tags] );
+        $this->render("recipe/single/index", ['recipe' => $recipe, 'tags' => $tags] );
     }
 
     public function action_edit()
@@ -49,14 +51,14 @@ class Controller_Recipe extends Controller_Base
         }
         else {
             $recipe = Recipe::findOne($_GET['id']);
-            View::admin("recipe/edit", ['recipe' => $recipe]);
+            $this->render("recipe/edit", ['recipe' => $recipe]);
         }
     } 
 
     public function action_delete()
     {
         $result = Recipe::delete($_GET['id']); 
-        $result ?  $this->addMessage("delete_recipe", "ok") : $this->addMessage("delete_recipe", "error");
-        $this->redirect("/recipe/index");
+        $this->addMessage($result, 'delete_recipe');
+        $this->back();
     }
 }
